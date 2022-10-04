@@ -21,7 +21,7 @@ ACharacterMovement::ACharacterMovement()
 	CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
 	CameraBoom->SetupAttachment(RootComponent);
 
-	CameraBoom->SetRelativeLocation(FVector(0.0f, 0.0f, 50.0f + BaseEyeHeight));
+	CameraBoom->SetRelativeLocation(FVector(0.0f, 0.0f, BaseEyeHeight));
 
 	CameraBoom->TargetArmLength = 0.0f;
 	CameraBoom->bUsePawnControlRotation = true;
