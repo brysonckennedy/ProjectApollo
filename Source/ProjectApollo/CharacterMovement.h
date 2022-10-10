@@ -23,12 +23,21 @@ public:
 	ACharacterMovement();
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera)
+		bool isSprinting = false;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera)
+		float SprintFactor = 1.0;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera)
 		USpringArmComponent* CameraBoom;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera)
 		UCameraComponent* FollowCamera;
 
 	void MoveForward(float Axis);
 	void MoveRight(float Axis);
+	void Sprint();
+	void StopSprinting();
+
 
 protected:
 	// Called when the game starts or when spawned

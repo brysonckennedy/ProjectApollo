@@ -60,6 +60,9 @@ void ACharacterMovement::SetupPlayerInputComponent(UInputComponent* PlayerInputC
 
 	PlayerInputComponent->BindAxis("MoveForward", this, &ACharacterMovement::MoveForward);
 	PlayerInputComponent->BindAxis("MoveRight", this, &ACharacterMovement::MoveRight);
+
+	PlayerInputComponent->BindAction("Sprint", IE_Pressed, this, &ACharacterMovement::Sprint);
+	PlayerInputComponent->BindAction("Sprint", IE_Released, this, &ACharacterMovement::StopSprinting);
 }
 
 void ACharacterMovement::MoveForward(float Axis)
@@ -69,13 +72,24 @@ void ACharacterMovement::MoveForward(float Axis)
 	FRotator YawRotation(0.0f, Rotation.Yaw, 0.0f);
 
 	FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
-	AddMovementInput(Direction, Axis);
+
+	//Check if only moving forward for sprinting and increases max speed, if any other direction then no sprinting
+	if(Axis > 0 && isSprinting && GetInputAxisValue("MoveRight") == 0)
+	{
+		GetCharacterMovement()->MaxWalkSpeed = 750.0f;
+		AddMovementInput(Direction, Axis);
+	}
+	else
+	{
+		GetCharacterMovement()->MaxWalkSpeed = 480.0f;
+		AddMovementInput(Direction, Axis);
+	}
+	
 	
 }
 
 void ACharacterMovement::MoveRight(float Axis)
 {
-	
 	FRotator Rotation = Controller->GetControlRotation();
 	FRotator YawRotation(0.0f, Rotation.Yaw, 0.0f);
 
@@ -84,4 +98,15 @@ void ACharacterMovement::MoveRight(float Axis)
 
 }
 
-//please github, grab me
+void ACharacterMovement::Sprint()
+{
+	isSprinting = true;
+}
+
+void ACharacterMovement::StopSprinting()
+{
+	isSprinting = false;
+}
+
+
+//making sure its up to date on git
